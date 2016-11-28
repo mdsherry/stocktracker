@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block body %}
+<form method="POST" action="{{url_for('submit_new_stock')}}">
+	<dl>
+	    {{ form.csrf_token }}
+	    {{ render_field(form.name) }}
+	    {{ render_field(form.description) }}
+	    {{ render_field(form.count) }}
+    </dl>
+    <p><input type="submit" value="Go"></p>
+</form>
+{% endblock %}

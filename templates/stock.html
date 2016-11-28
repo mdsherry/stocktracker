@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block body %}
+	<table class="stock">
+	<tr><th>Name</th><th>Count</th></tr>
+	{% for item in stock %}
+		<tr><td><a href="{{url_for('edit_stock', stock_id=item.id)}}">{{item.name}}</a></td><td>{{item.count}}</td></tr>
+	{% endfor %}
+	</table>
+
+	<a href="{{ url_for('new_stock') }}">Add new stock item</a>
+{% endblock %}

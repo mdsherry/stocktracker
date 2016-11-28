@@ -1,7 +1,8 @@
 CREATE TABLE stocked_item (
-	id PRIMARY KEY,
+	id INTEGER PRIMARY KEY,
 	name TEXT,
-	description TEXT
+	description TEXT,
+	count INT
 );
 
 CREATE TABLE listings (
