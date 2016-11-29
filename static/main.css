@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Maitree');
 /* Styles go here */
 html, body {
   width: 100%;
@@ -5,7 +6,13 @@ html, body {
 }
 
 body{
-  margin: 0 auto;
+  padding-top: 50px;
+  font-family: 'Maitree', serif;
+  font-size: 10pt;
+}
+
+input {
+  font-family: 'Maitree';
 }
 
 .content {
@@ -27,19 +34,22 @@ body{
 
 .sidebar ul{
     width: 100%;
-    margin: 0;
-    padding: 0;
     overflow: hidden;
-    list-style: none;
-
 }
 
 .sidebar li{
     width: 100%;
-    padding-top: 50%;
+    font-size: large;
 }
 
-.sidebar a{
-    display: block;
-    font-size: 0.5em;
+.sidebar li a {
+  color: #000;
+}
+
+
+table.stock .name {
+  width: 20em;
+}
+table td, table th {
+  padding-left: 1.5em;
 }

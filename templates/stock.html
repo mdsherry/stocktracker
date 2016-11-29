@@ -2,7 +2,7 @@
 {% from "_formhelpers.html" import render_field %}
 {% block body %}
 	<table class="stock">
-	<tr><th>Name</th><th>Count</th></tr>
+	<tr><th class="name">Name</th><th class="count">Count</th></tr>
 	{% for item in stock %}
 		<tr><td><a href="{{url_for('edit_stock', stock_id=item.id)}}">{{item.name}}</a></td><td>{{item.count}}</td></tr>
 	{% endfor %}

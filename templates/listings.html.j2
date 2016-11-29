@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<table>
+<tr><th></th><th>Listing</th><th>Size</th><th>Related stock items</th></tr>
+{% for listing in listings %}
+	<tr>
+		<td><a href="{{url_for('link_stock', listing_id=listing.listing_id, variation_id=listing.variation_id)}}"><img src="{{url_for('static', filename='link-1.svg')}}" /></a></td>
+		<td>{{listing.title}}</td>
+		<td>{{listing.variation_value}}</td>
+		<td>{{listing.stock_count}}</td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

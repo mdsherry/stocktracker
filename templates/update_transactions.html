@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<script>
+  $( function() {
+  	$( "#datepicker" ).datepicker({dateFormat: "yy-mm-dd"});
+  } );
+  </script>
+{% endblock %}
+
+{% block body %}
+Current {{transaction_count}} transactions. Most recent is from {{most_recent_transaction}}.
+<form method="post" action="{{url_for('update_transactions')}}">
+	<p>Date: <input type="text" id="datepicker" name="date" value="{{datepicker_most_recent}}"></p>
+	  <p><input type="submit" value="Retrieve new transactions (slow)"></p>
+ </form>
+<table>
+<tr><th>Date</th><th>Listing</th><th>Size</th></tr>
+{% for transaction in recent_transactions %}
+	<tr><td>{{transaction.dt|format_datetime}}</td><td><a href="{{transaction.url}}">{{transaction.title}}</a></td><td>{{transaction.variation_value|safe}}</td></tr>
+{% endfor %}
+</table>
+{% endblock %}

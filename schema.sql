@@ -6,7 +6,7 @@ CREATE TABLE stocked_item (
 );
 
 CREATE TABLE listings (
-	listing_id INT,
+	listing_id INT PRIMARY KEY,
 	title TEXT,
 	url TEXT
 );
@@ -15,7 +15,8 @@ CREATE TABLE product_variation (
 	listing_id INT,
 	variation_name TEXT,
 	variation_value TEXT,
-	variation_id INT
+	variation_id INT,
+	PRIMARY KEY (listing_id, variation_id)
 );
 
 CREATE TABLE variation_to_stock (
@@ -25,11 +26,9 @@ CREATE TABLE variation_to_stock (
 	count INT
 );
 
--- CREATE TABLE transactions (
--- 	id PRIMARY KEY,
--- 	receipt_id INT,
--- 	listing_id INT,
--- 	dt,
-
-
--- )
+CREATE TABLE transactions (
+	transaction_id INTEGER PRIMARY KEY,
+	listing_id INT,
+	size_id INT,
+	dt INT
+);

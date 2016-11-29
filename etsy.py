@@ -1,3 +1,4 @@
+import json
 from requests_oauthlib import OAuth1Session
 import requests
 
@@ -16,32 +17,40 @@ class Etsy(object):
         page = 1
         # Make a copy so we don't modify our parameter
         params = params.copy()
-        params['api_key'] = self.client_key
         while page:
             params['page'] = page
-            r = self.oauth.get(url, params=params)
-            data = r.json()
+            r = request_function(url, params=params)
+            try:
+                data = r.json()
+            except json.decoder.JSONDecodeError:
+                print(r)
+                print (r.text)
+                raise
             if filter:
                 filtered_results = [result for result in data['results'] if filter(result)]
                 results.extend(filtered_results)
                 if len(filtered_results) < len(data['results']):
                     break
             else:
-                results.extend(data['results'])
+                for result in data['results']:
+                    yield result
+
             if data['pagination']:
                 page = data['pagination']['next_page']
             else:
                 page = None
-        return results
+
 
     def _get_paginated_oauth(self, url, params, filter=None):
-        return self._get_paginated_base(self.oauth, url, params, filter)
+        return self._get_paginated_base(self.oauth.get, url, params, filter)
 
     def _get_paginated(self, url, params, filter=None):
+        params = params.copy()
+        params['api_key'] = self.client_key
         return self._get_paginated_base(requests.get, url, params, filter)
 
     def get_transactions(self, shop_id, since=None):
-        url = ETSY_URL_BASE + "shops/{shop_id}/transactions".format(shop_id = shop_id)
+        url = ETSY_URL_BASE + "shops/{shop_id}/transactions".format(shop_id=shop_id)
         if since:
             return self._get_paginated_oauth(url, {}, lambda result: result['creation_tsz'] >= since)
         else:
@@ -54,3 +63,7 @@ class Etsy(object):
     def get_variations(self, listing_id):
         url = ETSY_URL_BASE + "listings/{listing_id}/variations".format(listing_id=listing_id)
         return self._get_paginated(url, {})
+
+    def check_scopes(self):
+        r = self.oauth.get("https://openapi.etsy.com/v2/oauth/scopes")
+        return r.json()
