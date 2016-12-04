@@ -21,9 +21,11 @@ def load_listings():
             db.add_variation(listing['listing_id'], variation)
 
 def load_transactions(since=None):
+    print("Fetching new transactions")
     db = DB(sqlite3.connect("database.db"))
     e = etsy.Etsy(config)
     for transaction in e.get_transactions(config.site, since):
+        print("Adding transaction {}".format(transaction))
         try:
             db.add_transaction(transaction)
             db.update_stock_count(transaction)
@@ -62,18 +64,21 @@ def init_db():
     db.commit()
 
 def send_report():
+    print("Preparing reporting")
     db = sqlite3.connect("database.db")
     cur = db.cursor()
     cur.execute("SELECT * FROM stocked_item WHERE count < ?", (config.stock_threshold,))
     low_stock = cur.fetchall()
     if low_stock:
+        print("Low stock found. Sending report.")
+        print(";  ".join("{} ({})".format(item[1], item[3]) for item in low_stock))
         server = smtplib.SMTP('smtp.gmail.com:587')
         server.ehlo()
         server.starttls()
         server.login(config.email_username, config.email_password)
         low_stock_list = ["<li>{} ({})</li>".format(item[1], item[3]) for item in low_stock]
-        me = "mdsherry@gmail.com"
-        you = "lizsherry@gmail.com"
+        me = config.email_username
+        you = config.email_username
         html = """<html><head></head><body>
         The following items are running low:
         <ul>
