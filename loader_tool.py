@@ -97,7 +97,7 @@ def monitor():
     schedule.every().day.at("18:00").do(send_report)
     while True:
         schedule.run_pending()
-        time.sleep(60)
+        time.sleep(1)
 
 def main():
     parser = argparse.ArgumentParser(description="A tool to bulk load data from the Etsy API")
