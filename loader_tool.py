@@ -23,6 +23,7 @@ def load_listings():
 def load_transactions(since=None):
     print("Fetching new transactions")
     db = DB(sqlite3.connect("database.db"))
+    db.db.row_factory = sqlite3.Row
     e = etsy.Etsy(config)
     for transaction in e.get_transactions(config.site, since):
         print("Adding transaction {}".format(transaction))

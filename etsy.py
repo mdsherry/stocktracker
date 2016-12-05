@@ -52,9 +52,11 @@ class Etsy(object):
     def get_transactions(self, shop_id, since=None):
         url = ETSY_URL_BASE + "shops/{shop_id}/transactions".format(shop_id=shop_id)
         if since:
-            return self._get_paginated_oauth(url, {}, lambda result: result['creation_tsz'] >= since)
+            for result in self._get_paginated_oauth(url, {}, lambda result: result['creation_tsz'] >= since):
+                yield result
         else:
-            return self._get_paginated_oauth(url, {})
+            for result in self._get_paginated_oauth(url, {}):
+                yield result
 
     def get_listings(self, shop_id, include_private=False):
         url = ETSY_URL_BASE + "shops/{shop_id}/listings/active".format(shop_id=shop_id)
