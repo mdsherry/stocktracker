@@ -53,3 +53,11 @@ table.stock .name {
 table td, table th {
   padding-left: 1.5em;
 }
+
+tr.low-stock td {
+  background: #FFD3D3;
+}
+
+tr.warning-stock td {
+  background: #FFF7B9;
+}

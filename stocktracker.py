@@ -10,6 +10,7 @@ import etsy
 import config
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 DATABASE = 'database.db'
 
@@ -39,7 +40,7 @@ def index():
 
 @app.route("/stock")
 def list_stock():
-    return render_template("stock.html", stock=get_db().get_all_stock())
+    return render_template("stock.html", stock=get_db().get_all_stock(), threshold=config.stock_threshold)
 
 @app.route("/stock/new", methods=['GET'])
 def new_stock():

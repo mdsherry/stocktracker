@@ -4,9 +4,10 @@
 	<table class="stock">
 	<tr><th class="name">Name</th><th class="count">Count</th></tr>
 	{% for item in stock %}
-		<tr><td><a href="{{url_for('edit_stock', stock_id=item.id)}}">{{item.name}}</a></td><td>{{item.count}}</td></tr>
+		<tr {% if item.count < threshold %}class="low-stock"{%elif item.count < (2 * threshold - 1)%}class="warning-stock"{%endif%}><td><a href="{{url_for('edit_stock', stock_id=item.id)}}">{{item.name}}</a></td><td>{{item.count}}</td></tr>
 	{% endfor %}
 	</table>
 
 	<a href="{{ url_for('new_stock') }}">Add new stock item</a>
 {% endblock %}
+stock
