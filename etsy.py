@@ -29,6 +29,8 @@ class Etsy(object):
             if filter:
                 filtered_results = [result for result in data['results'] if filter(result)]
                 results.extend(filtered_results)
+                for result in filtered_results:
+                    yield result
                 if len(filtered_results) < len(data['results']):
                     break
             else:

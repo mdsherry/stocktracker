@@ -36,9 +36,12 @@ class DB(object):
     def add_transaction(self, transaction):
         cur = self.db.cursor()
         size_id = [var['value_id'] for var in transaction['variations'] if var['property_id'] == 100]
-        cur.execute("INSERT INTO transactions (transaction_id, listing_id, size_id, dt) VALUES (?, ?, ?, ?)",
-            (transaction['transaction_id'], transaction['listing_id'], size_id[0] if size_id else 0, transaction['creation_tsz']))
-        self.db.commit()
+        try:
+            cur.execute("INSERT INTO transactions (transaction_id, listing_id, size_id, dt) VALUES (?, ?, ?, ?)",
+                (transaction['transaction_id'], transaction['listing_id'], size_id[0] if size_id else 0, transaction['creation_tsz']))
+            self.db.commit()
+        except sqlite3.IntegrityError:
+            pass
 
     def add_listing(self, listing):
         cur = self.db.cursor()
