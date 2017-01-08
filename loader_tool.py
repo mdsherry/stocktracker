@@ -15,7 +15,7 @@ def load_listings():
     db = DB(sqlite3.connect("database.db"))
     e = etsy.Etsy(config)
     for listing in e.get_listings(config.site):
-        print ("Adding listing " + listing['title'])
+        print ("Saw listing " + listing['title'])
         db.add_listing(listing)
         for variation in e.get_variations(listing['listing_id']):
             db.add_variation(listing['listing_id'], variation)
@@ -96,9 +96,14 @@ def send_report():
 def monitor():
     schedule.every().hour.do(load_new_transactions)
     schedule.every().day.at("18:00").do(send_report)
+    i = 0
     while True:
         schedule.run_pending()
         time.sleep(1)
+        if i % 600 == 0:
+            i = 0
+            print(schedule.next_run())
+        i += 1
 
 def main():
     parser = argparse.ArgumentParser(description="A tool to bulk load data from the Etsy API")
